@@ -11,7 +11,7 @@ export default function NoteCard({
   return (
     <Box
       borderWidth="1px"
-      borderColor="gray.200"
+      borderColor="blackAlpha.200"
       color={color}
       backgroundColor={backgroundColor}
       rounded="md"
