@@ -1,7 +1,9 @@
 import { createSlice, createEntityAdapter, nanoid } from "@reduxjs/toolkit";
 
-const notesAdapter = createEntityAdapter();
-export const notesSelector = notesAdapter.getSelectors();
+const notesAdapter = createEntityAdapter({
+  sortComparer: (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+});
+export const notesSelector = notesAdapter.getSelectors((state) => state.notes);
 
 const initialState = notesAdapter.getInitialState();
 

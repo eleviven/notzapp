@@ -12,9 +12,9 @@ const breakpointColumnsObj = {
 };
 
 export default function NoteList() {
-  const notes = useSelector(notesSelector.selectEntities);
+  const notes = useSelector(notesSelector.selectAll);
 
-  if (!notes) {
+  if (!notes.length) {
     return (
       <Box
         paddingY="10"
@@ -27,7 +27,7 @@ export default function NoteList() {
         <Text fontSize="3xl">📝</Text>
         <Box marginTop="3">
           <Text fontWeight="semibold" fontSize="lg">
-            Henüz not eklemediniz
+            You're not add note yet
           </Text>
         </Box>
       </Box>
@@ -41,13 +41,15 @@ export default function NoteList() {
         className="masonry-grid"
         columnClassName="masonry-grid-column"
       >
-        {/* {notes?.map((note) => (
+        {notes.map((note) => (
           <NoteCard
+            key={note.id}
             text={note.text}
             backgroundColor={note.color}
-            color="white"
+            color={note.color ? "white" : null}
+            marginBottom="4"
           />
-        ))} */}
+        ))}
       </Masonry>
     </Box>
   );
