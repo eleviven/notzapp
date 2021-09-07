@@ -17,7 +17,6 @@ const writeBoxSlice = createSlice({
     },
     reset: (state) => {
       state.text = "";
-      state.color = null;
     },
   },
 });
