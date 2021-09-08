@@ -5,7 +5,7 @@ import { TrashIcon, PencilAltIcon } from "@heroicons/react/outline";
 import Masonry from "react-masonry-css";
 import { NoteCard } from "../../components";
 import { notesSelector, removeNote } from "../../store/slices/notes.slice";
-import data from "../../static/data";
+import { colorsSelector } from "../../store/slices/write-box.slice";
 
 const breakpointColumnsObj = {
   default: 2,
@@ -14,6 +14,7 @@ const breakpointColumnsObj = {
 
 export default function NoteList() {
   const notes = useSelector(notesSelector.selectAll);
+  const colors = useSelector(colorsSelector);
   const dispatch = useDispatch();
 
   const handleRemove = (id) => {
@@ -54,8 +55,8 @@ export default function NoteList() {
             key={note.id}
             text={note.text}
             date={note.createdAt}
-            backgroundColor={note.color}
-            color={data.colorSchemeMap[note.color].color}
+            backgroundColor={colors[note.colorId]?.backgroundColor}
+            color={colors[note.colorId]?.textColor}
             marginBottom="4"
             actions={[
               // {

@@ -1,23 +1,27 @@
 import { memo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ColorCheckBox, RadioGroup } from "../";
-import { colorSelector, setColor } from "../../store/slices/write-box.slice";
-import data from "../../static/data";
-
-const { colors } = data;
+import {
+  activeColorSelector,
+  colorsSelector,
+  setActiveColorId,
+} from "../../store/slices/write-box.slice";
 
 function WriteBoxColorPicker() {
-  const color = useSelector(colorSelector);
+  const colorEntities = useSelector(colorsSelector);
+  const colors = Object.values(colorEntities);
+  const color = useSelector(activeColorSelector);
   const dispatch = useDispatch();
 
   const onChange = (value) => {
-    dispatch(setColor(value));
+    const { id } = colors?.find((c) => c.backgroundColor === value) || {};
+    if (id) dispatch(setActiveColorId(id));
   };
 
   return (
     <RadioGroup
-      values={colors}
-      value={color}
+      values={Object.values(colors).map((i) => i.backgroundColor)}
+      value={color.backgroundColor}
       renderItem={({ item }) => {
         return <ColorCheckBox color={item.value} isChecked={item.isChecked} />;
       }}

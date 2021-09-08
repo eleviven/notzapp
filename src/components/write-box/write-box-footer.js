@@ -4,10 +4,11 @@ import { Box, Text } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
 import WriteColorPicker from "./write-box-color-picker";
 import { addNote } from "../../store/slices/notes.slice";
-import { writeBoxSelector, reset } from "../../store/slices/write-box.slice";
-import data from "../../static/data";
-
-const { colorSchemeMap } = data;
+import {
+  writeBoxSelector,
+  reset,
+  activeColorSelector,
+} from "../../store/slices/write-box.slice";
 
 const WriteBoxCounter = ({ text }) => {
   return text.length ? (
@@ -24,16 +25,17 @@ const WriteBoxCounter = ({ text }) => {
 };
 
 export default function WriteBoxFooter() {
-  const { text, color } = useSelector(writeBoxSelector);
-  const dispatch = useDispatch();
   const toast = useToast();
+  const { text, activeColorId } = useSelector(writeBoxSelector);
+  const color = useSelector(activeColorSelector);
+  const dispatch = useDispatch();
 
   const handleAddNote = () => {
     if (text) {
       dispatch(
         addNote({
           text,
-          color,
+          colorId: activeColorId,
         })
       );
       dispatch(reset());
@@ -60,10 +62,7 @@ export default function WriteBoxFooter() {
       <WriteColorPicker />
       <Box alignItems="center">
         <WriteBoxCounter text={text} />
-        <Button
-          colorScheme={colorSchemeMap[color]?.background}
-          onClick={handleAddNote}
-        >
+        <Button colorScheme={color.colorScheme} onClick={handleAddNote}>
           Add Note
         </Button>
       </Box>
