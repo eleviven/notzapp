@@ -1,18 +1,26 @@
 import React from "react";
-import Masonry from "react-masonry-css";
+import { useDispatch, useSelector } from "react-redux";
 import { Box, Text } from "@chakra-ui/layout";
+import { TrashIcon, PencilAltIcon } from "@heroicons/react/outline";
+import Masonry from "react-masonry-css";
 import { NoteCard } from "../../components";
-import { useSelector } from "react-redux";
-import { notesSelector } from "../../store/slices/notes.slice";
+import { notesSelector, removeNote } from "../../store/slices/notes.slice";
+import data from "../../static/data";
 
 const breakpointColumnsObj = {
-  default: 3,
-  700: 2,
+  default: 2,
   500: 1,
 };
 
 export default function NoteList() {
   const notes = useSelector(notesSelector.selectAll);
+  const dispatch = useDispatch();
+
+  const handleRemove = (id) => {
+    if (window.confirm("Are you sure?")) {
+      dispatch(removeNote(id));
+    }
+  };
 
   if (!notes.length) {
     return (
@@ -45,9 +53,24 @@ export default function NoteList() {
           <NoteCard
             key={note.id}
             text={note.text}
+            date={note.createdAt}
             backgroundColor={note.color}
-            color={note.color ? "white" : null}
+            color={data.colorSchemeMap[note.color].color}
             marginBottom="4"
+            actions={[
+              // {
+              //   title: "Edit",
+              //   icon: PencilAltIcon,
+              //   colorSchema: "gray",
+              //   onClick: () => {},
+              // },
+              {
+                title: "Delete",
+                icon: TrashIcon,
+                colorSchema: "red",
+                onClick: () => handleRemove(note.id),
+              },
+            ]}
           />
         ))}
       </Masonry>
