@@ -4,7 +4,7 @@ import { ColorCheckBox, RadioGroup } from "../";
 import { colorSelector, setColor } from "../../store/slices/write-box.slice";
 import data from "../../static/data";
 
-const colors = data.colors;
+const { colors } = data;
 
 function WriteBoxColorPicker() {
   const color = useSelector(colorSelector);

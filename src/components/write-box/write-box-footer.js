@@ -7,6 +7,8 @@ import { addNote } from "../../store/slices/notes.slice";
 import { writeBoxSelector, reset } from "../../store/slices/write-box.slice";
 import data from "../../static/data";
 
+const { colorSchemeMap } = data;
+
 const WriteBoxCounter = ({ text }) => {
   return text.length ? (
     <Text
@@ -59,7 +61,7 @@ export default function WriteBoxFooter() {
       <Box alignItems="center">
         <WriteBoxCounter text={text} />
         <Button
-          colorScheme={data.colorSchemeMap[color ? color : "blue.400"]}
+          colorScheme={colorSchemeMap[color]?.background}
           onClick={handleAddNote}
         >
           Add Note
