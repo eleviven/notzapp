@@ -2,7 +2,8 @@ import { createSlice, createSelector } from "@reduxjs/toolkit";
 
 const initialState = {
   text: "",
-  color: null,
+  activeColorId: 0,
+  colors: [],
 };
 
 const writeBoxSlice = createSlice({
@@ -12,8 +13,17 @@ const writeBoxSlice = createSlice({
     setText: (state, action) => {
       state.text = action.payload;
     },
-    setColor: (state, action) => {
-      state.color = action.payload;
+    setActiveColorId: (state, action) => {
+      state.activeColorId = action.payload;
+    },
+    setColors: (state, { payload }) => {
+      if (Array.isArray(payload)) {
+        state.activeColorId = payload[0].id;
+        state.colors = payload.reduce((acc, item) => {
+          acc[item.id] = item;
+          return acc;
+        }, {});
+      }
     },
     reset: (state) => {
       state.text = "";
@@ -25,12 +35,19 @@ export const writeBoxSelector = createSelector(
   (state) => state.writeBox,
   (writeBox) => writeBox
 );
-
-export const colorSelector = createSelector(
-  (state) => state.writeBox.color,
-  (color) => color
+export const colorsSelector = createSelector(
+  (state) => state.writeBox.colors,
+  (colors) => colors || []
+);
+export const activeColorSelector = createSelector(
+  (state) => state.writeBox.activeColorId,
+  (state) => state.writeBox.colors,
+  (id, colors) => {
+    return colors[id] || {};
+  }
 );
 
-export const { setText, setColor, reset } = writeBoxSlice.actions;
+export const { setText, setActiveColorId, setColors, reset } =
+  writeBoxSlice.actions;
 
 export default writeBoxSlice.reducer;
