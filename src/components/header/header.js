@@ -3,6 +3,9 @@ import { Box } from "@chakra-ui/layout";
 export default function Header() {
   return (
     <Box
+      position="sticky"
+      zIndex="9"
+      top="0"
       display="flex"
       borderBottom="1px"
       borderColor="gray.200"
