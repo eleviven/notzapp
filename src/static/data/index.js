@@ -1,9 +1,22 @@
 const data = {
-  colors: ["blue.400", "red.400", "green.400"],
+  colors: ["blue.300", "red.300", "green.300", "gray.50"],
   colorSchemeMap: {
-    "blue.400": "blue",
-    "red.400": "red",
-    "green.400": "green",
+    "blue.300": {
+      background: "blue",
+      color: "white",
+    },
+    "red.300": {
+      background: "red",
+      color: "white",
+    },
+    "green.300": {
+      background: "green",
+      color: "white",
+    },
+    "gray.50": {
+      background: "blackAlpha",
+      color: "black",
+    },
   },
 };
 
