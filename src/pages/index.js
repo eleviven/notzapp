@@ -1,23 +1,21 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Box } from "@chakra-ui/layout";
-import { WriteBox } from "../components";
 import { NoteList } from "../containers";
-import { colorSelector, setColor } from "../store/slices/write-box.slice";
+import { colorsSelector, setColors } from "../store/slices/write-box.slice";
 import data from "../static/data";
 
 export default function Home() {
-  const color = useSelector(colorSelector);
+  const colors = useSelector(colorsSelector);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (!color) {
-      dispatch(setColor(data.colors[0]));
+    if (!colors.length) {
+      dispatch(setColors(data.colors));
     }
-  }, [dispatch, color]);
+  }, [dispatch, colors.length]);
   return (
     <Box>
-      <WriteBox />
       <NoteList />
     </Box>
   );
