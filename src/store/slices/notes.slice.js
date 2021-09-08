@@ -15,19 +15,18 @@ const notesSlice = createSlice({
       reducer: (state, action) => {
         notesAdapter.addOne(state, action);
       },
-      prepare: (payload) => {
-        return {
-          payload: {
-            ...payload,
-            id: nanoid(),
-            createdAt: new Date().toString(),
-          },
-        };
-      },
+      prepare: (payload) => ({
+        payload: {
+          id: nanoid(),
+          createdAt: new Date().toString(),
+          ...payload,
+        },
+      }),
     },
+    removeNote: notesAdapter.removeOne,
   },
 });
 
-export const { addNote } = notesSlice.actions;
+export const { addNote, removeNote } = notesSlice.actions;
 
 export default notesSlice.reducer;
