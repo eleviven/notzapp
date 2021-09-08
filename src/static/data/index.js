@@ -1,23 +1,34 @@
 const data = {
-  colors: ["blue.300", "red.300", "green.300", "gray.50"],
-  colorSchemeMap: {
-    "blue.300": {
-      background: "blue",
-      color: "white",
+  colors: [
+    {
+      id: 1,
+      title: "Blue",
+      textColor: "white",
+      backgroundColor: "blue.300",
+      colorScheme: "twitter",
     },
-    "red.300": {
-      background: "red",
-      color: "white",
+    {
+      id: 2,
+      title: "Red",
+      textColor: "white",
+      backgroundColor: "red.300",
+      colorScheme: "red",
     },
-    "green.300": {
-      background: "green",
-      color: "white",
+    {
+      id: 3,
+      title: "Green",
+      textColor: "white",
+      backgroundColor: "green.300",
+      colorScheme: "green",
     },
-    "gray.50": {
-      background: "blackAlpha",
-      color: "black",
+    {
+      id: 4,
+      title: "Gray",
+      textColor: "gray.600",
+      backgroundColor: "gray.50",
+      colorScheme: "blackAlpha",
     },
-  },
+  ],
 };
 
 export default data;
