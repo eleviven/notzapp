@@ -1,4 +1,5 @@
 import React from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Text } from "@chakra-ui/layout";
 import { TrashIcon, PencilAltIcon } from "@heroicons/react/outline";
@@ -8,11 +9,15 @@ import { notesSelector, removeNote } from "../../store/slices/notes.slice";
 import { colorsSelector } from "../../store/slices/write-box.slice";
 
 const breakpointColumnsObj = {
-  default: 2,
+  default: 4,
+  980: 3,
+  760: 2,
   500: 1,
 };
 
 export default function NoteList() {
+  const history = useHistory();
+  const location = useLocation();
   const notes = useSelector(notesSelector.selectAll);
   const colors = useSelector(colorsSelector);
   const dispatch = useDispatch();
@@ -59,12 +64,16 @@ export default function NoteList() {
             color={colors[note.colorId]?.textColor}
             marginBottom="4"
             actions={[
-              // {
-              //   title: "Edit",
-              //   icon: PencilAltIcon,
-              //   colorSchema: "gray",
-              //   onClick: () => {},
-              // },
+              {
+                title: "Edit",
+                icon: PencilAltIcon,
+                colorSchema: "gray",
+                onClick: () =>
+                  history.push("/compose", {
+                    noteId: note.id,
+                    background: location,
+                  }),
+              },
               {
                 title: "Delete",
                 icon: TrashIcon,
