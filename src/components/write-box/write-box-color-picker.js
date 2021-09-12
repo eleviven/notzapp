@@ -1,6 +1,7 @@
-import { memo } from "react";
+import { memo, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ColorCheckBox, RadioGroup } from "../";
+import { activeNoteSelector } from "../../store/slices/notes.slice";
 import {
   activeColorSelector,
   colorsSelector,
@@ -8,15 +9,22 @@ import {
 } from "../../store/slices/write-box.slice";
 
 function WriteBoxColorPicker() {
+  const dispatch = useDispatch();
+  const activeNote = useSelector(activeNoteSelector);
   const colorEntities = useSelector(colorsSelector);
   const colors = Object.values(colorEntities);
   const color = useSelector(activeColorSelector);
-  const dispatch = useDispatch();
 
   const onChange = (value) => {
     const { id } = colors?.find((c) => c.backgroundColor === value) || {};
     if (id) dispatch(setActiveColorId(id));
   };
+
+  useEffect(() => {
+    if (activeNote) {
+      dispatch(setActiveColorId(activeNote.colorId));
+    }
+  }, [activeNote, dispatch]);
 
   return (
     <RadioGroup
