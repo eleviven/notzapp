@@ -16,7 +16,7 @@ function WriteBoxColorPicker() {
   const color = useSelector(activeColorSelector);
 
   const onChange = (value) => {
-    const { id } = colors?.find((c) => c.backgroundColor === value) || {};
+    const { id } = colors?.find((c) => c.value === value) || {};
     if (id) dispatch(setActiveColorId(id));
   };
 
@@ -28,8 +28,8 @@ function WriteBoxColorPicker() {
 
   return (
     <RadioGroup
-      values={Object.values(colors).map((i) => i.backgroundColor)}
-      value={color.backgroundColor}
+      values={Object.values(colors).map((i) => i.value)}
+      value={color.value}
       renderItem={({ item }) => {
         return <ColorCheckBox color={item.value} isChecked={item.isChecked} />;
       }}
