@@ -1,44 +1,49 @@
-import { Button } from "@chakra-ui/button";
+import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Text } from "@chakra-ui/layout";
+import { Button, IconButton } from "@chakra-ui/button";
+import { Box, HStack } from "@chakra-ui/layout";
 import { useToast } from "@chakra-ui/toast";
+import Icon from "@chakra-ui/icon";
+import { TrashIcon } from "@heroicons/react/outline";
 import WriteColorPicker from "./write-box-color-picker";
-import { addNote } from "../../store/slices/notes.slice";
+import {
+  activeNoteSelector,
+  addNote,
+  updateNote,
+} from "../../store/slices/notes.slice";
 import {
   writeBoxSelector,
   reset,
   activeColorSelector,
 } from "../../store/slices/write-box.slice";
 
-const WriteBoxCounter = ({ text }) => {
-  return text.length ? (
-    <Text
-      as="span"
-      color="gray.600"
-      marginRight={5}
-      fontWeight="semibold"
-      fontSize="sm"
-    >
-      {text.length}
-    </Text>
-  ) : null;
-};
-
 export default function WriteBoxFooter() {
+  const history = useHistory();
   const toast = useToast();
   const { text, activeColorId } = useSelector(writeBoxSelector);
+  const activeNote = useSelector(activeNoteSelector);
   const color = useSelector(activeColorSelector);
   const dispatch = useDispatch();
 
-  const handleAddNote = () => {
+  const handleSaveNote = () => {
     if (text) {
-      dispatch(
-        addNote({
-          text,
-          colorId: activeColorId,
-        })
-      );
+      if (!activeNote) {
+        dispatch(
+          addNote({
+            text,
+            colorId: activeColorId,
+          })
+        );
+      } else {
+        dispatch(
+          updateNote({
+            id: activeNote.id,
+            changes: { text, colorId: activeColorId },
+          })
+        );
+      }
       dispatch(reset());
+      history.push("/");
     } else {
       toast({
         title: "A blank note is not a note. 👌",
@@ -60,12 +65,22 @@ export default function WriteBoxFooter() {
       paddingY="2"
     >
       <WriteColorPicker />
-      <Box alignItems="center">
-        <WriteBoxCounter text={text} />
-        <Button colorScheme={color.colorScheme} onClick={handleAddNote}>
-          Add Note
+      <HStack alignItems="center">
+        {text.length > 0 && (
+          <Button color="gray.600" variant="ghost" children={text.length} />
+        )}
+        {activeNote && (
+          <IconButton
+            icon={<Icon as={TrashIcon} />}
+            color="red.600"
+            colorScheme="gray"
+            onClick={handleSaveNote}
+          />
+        )}
+        <Button colorScheme={color.colorScheme} onClick={handleSaveNote}>
+          {!activeNote ? "Add Note" : "Update"}
         </Button>
-      </Box>
+      </HStack>
     </Box>
   );
 }
